@@ -1,0 +1,198 @@
+Host
+ec2-35-174-127-63.compute-1.amazonaws.com
+
+Database
+d57parlkjsguj6
+
+User
+alpndjupeyjvrt
+
+Port
+5432
+
+Password
+98727433ed7a5ec3f40745d38eeba15e108b6377bf048d8bdac75d6236b5925a
+
+URI
+postgres://ec2-35-174-127-63.compute-1.amazonaws.com:5432/d57parlkjsguj6
+
+Heroku CLI
+heroku pg:psql postgresql-globular-47847 --app hillerinventory
+
+/* String url = "jdbc:postgresql://ec2-79-125-26-232.eu-west-1.compute.amazonaws.com:5432/ddi57bvd0bf12a?sslmode=require"; */
+
+String url = "jdbc:postgresql://ec2-35-174-127-63.compute-1.amazonaws.com:5432/d57parlkjsguj6?sslmode=require";
+
+
+CREATE TABLE admin
+(
+	userid VARCHAR(100) NOT NULL PRIMARY KEY,
+	password VARCHAR(100) NOT NULL,
+	usertype VARCHAR(100) DEFAULT 'general items'
+);
+
+desc admin;
+
++----------+--------------+------+-----+---------------+-------+
+| Field    | Type         | Null | Key | Default       | Extra |
++----------+--------------+------+-----+---------------+-------+
+| userid   | varchar(100) | NO   | PRI | NULL          |       |
+| password | varchar(100) | NO   |     | NULL          |       |
+| usertype | varchar(100) | YES  |     | general items |       |
++----------+--------------+------+-----+---------------+-------+
+
+insert into admin(userid, password) values ('admin','admin');
+
+CREATE TABLE admin
+(
+	input_id NUMBER(11) AUTO INCREMENT PRIMARY KEY,
+	input_date VARCHAR(20) NOT NULL,
+	vendor_id NUMBER(11) NOT NULL FOREIGN KEY REFERENCES vendor,
+	item_id NUMBER(11) NOT NULL FOREIGN KEY REFERENCES item,
+	machine_id NUMBER(11) NOT NULL FOREIGN KEY REFERENCES machine,
+	quantity VARCHAR(100) NOT NULL,
+	challan_no VARCHAR(100) NOT NULL,
+	challan_date VARCHAR(20) NOT NULL
+);
+
+//postgresql
+CREATE TABLE input
+(
+	input_id serial PRIMARY KEY,
+	input_date VARCHAR(20) NOT NULL,
+	vendor_id INTEGER NOT NULL ,
+	item_id INTEGER NOT NULL ,
+	machine_id INTEGER NOT NULL ,
+	quantity VARCHAR(100) NOT NULL,
+	challan_no VARCHAR(100) NOT NULL,
+	challan_date VARCHAR(20) NOT NULL,
+	FOREIGN KEY (vendor_id) REFERENCES vendor,
+	FOREIGN KEY (item_id) REFERENCES item,
+	FOREIGN KEY (machine_id) REFERENCES machine
+);
+
+
+CREATE TABLE item
+(
+	item_id serial AUTO_INCREMENT PRIMARY KEY,
+	item_name VARCHAR(100) NOT NULL
+);
+
+// postgresql
+CREATE TABLE item 									
+(
+	item_id serial PRIMARY KEY,
+	item_name VARCHAR(100) NOT NULL
+);
+
+INSERT INTO item(item_name) values('Gr.Regulator');
+INSERT INTO item(item_name) values('Feed Pipe 304');
+INSERT INTO item(item_name) values('Blender 304');
+
+d57parlkjsguj6=> select * from item;
+ item_id |   item_name
+---------+---------------
+       1 | Gr.Regulator
+       2 | Feed Pipe 304
+       3 | Blender 304
+
+
+
+
+CREATE TABLE machine
+(
+	machine_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+	machine_type VARCHAR(100) NOT NULL
+);
+
+
+// postgresql
+CREATE TABLE machine									
+(
+	machine_id serial PRIMARY KEY,
+	machine_type VARCHAR(100) NOT NULL
+);
+
+INSERT INTO machine(machine_type) values('HC 450');
+INSERT INTO machine(machine_type) values('COMMON');
+INSERT INTO machine(machine_type) values('DP 15');
+INSERT INTO machine(machine_type) values('HC 250');
+
+d57parlkjsguj6=>  select * from machine;
+ machine_id | machine_type
+------------+--------------
+          1 | HC 450
+          2 | COMMON
+          3 | DP 15
+          4 | HC 250
+
+
+
+
+CREATE TABLE vendor
+(
+	vendor_id INT(11) AUTO INCREMENT PRIMARY KEY,
+	vendor_name VARCHAR(100) NOT NULL,
+	address VARCHAR(255),
+	contact_no VARCHAR(100),
+	gst_no VARCHAR(19)
+);
+
+//postgresql
+CREATE TABLE vendor
+(
+	vendor_id serial PRIMARY KEY,
+	vendor_name VARCHAR(100) NOT NULL,
+	address VARCHAR(255),
+	contact_no VARCHAR(100),
+	gst_no VARCHAR(19)
+);
+
+INSERT INTO vendor(vendor_name,address,contact_no,gst_no) values('All-Burhan','132A Muhammad Ali Road Kolkata-700004','+91-123654789','19ACPVB152Z12HASS78');
+INSERT INTO vendor(vendor_name,address,contact_no,gst_no) values('Saas','M.G Road Kolkata-700001','+91-963254187','19ACPVB152AMB21T78');
+
+d57parlkjsguj6=>  select * from vendor;
+ vendor_id | vendor_name |                address                |  contact_no   |       gst_no
+-----------+-------------+---------------------------------------+---------------+---------------------
+         1 | All-Burhan  | 132A Muhammad Ali Road Kolkata-700004 | +91-123654789 | 19ACPVB152Z12HASS78
+         2 | Saas        | M.G Road Kolkata-700001               | +91-963254187 | 19ACPVB152AMB21T78
+
+CREATE TABLE stock
+(
+	item_id INT(11) FOREIGN KEY REFERENCES item,
+	machine_id INT(11) FOREIGN KEY REFERENCES machine,
+	quantity_in_hand VARCHAR(20),
+	PRIMARY KEY (item_id,machine_id)
+);
+
+//postgresql
+CREATE TABLE stock
+(
+	item_id integer NOT NULL,
+	machine_id integer NOT NULL,
+	quantity_in_hand VARCHAR(20),
+	PRIMARY KEY (item_id,machine_id)
+);
+
+
+CREATE TABLE stock
+(
+  item_id integer NOT NULL,
+  machine_id integer NOT NULL,
+  quantity_in_hand VARCHAR(20),
+  PRIMARY KEY (item_id,machine_id),
+  FOREIGN KEY (item_id) REFERENCES item,
+  FOREIGN KEY (machine_id) REFERENCES machine
+);
+
+ALTER SEQUENCE input_input_id_seq RESTART WITH 1;
+
+delete from input;
+delete from stock;
+
+
+update input set challan_date = '"+challan_date+"' challan_no = '"+challan_no+"' input_date = '"+input_date+"' vendor_id = '"+vendor_id+"' item_id = '"+item_id+"' machine_id = '"+machine_id+"' quantity = '"+qty+"'"
+
+update input set challan_date = '"+challan_date+"' challan_no = '"+challan_no+"' input_date = '"+input_date+"' vendor_id = '"+vendor_id+"' item_id = '"+item_id+"' machine_id = '"+machine_id+"' quantity = '"+qty+"' where input_id = '"+input_date+"'"
+
+update input set challan_date = '2020-05-01',challan_no = 'C1532',input_date = '2020-05-04',vendor_id = '2 item_id = '2',machine_id = '4',quantity = '380' where input_id = '25'

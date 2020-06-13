@@ -1,4 +1,6 @@
-# Sample webapp-runner app
+# Hiller Inventory Management System
+
+[DB SCHEMA](https://github.com/Laha988017/hiller/dbSchema.jpeg)
 
 ## Using Git
 

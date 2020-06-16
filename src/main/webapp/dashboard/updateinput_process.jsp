@@ -157,7 +157,10 @@
   <div class="form-row">
     <div class="form-group col-md-6">
       <input type="hidden" class="form-control" id="input_id" name="input_id" value="<%=rsEdit.getString("input_id")%>">
-      <input type="hidden" class="form-control" id="quantity" name="quantity" value="<%=rsEdit.getString("quantity")%>">
+      <input type="hidden" class="form-control" id="preQuantity" name="prevQuantity" value="<%=rsEdit.getString("quantity")%>">
+      <input type="hidden" class="form-control" id="prevItem" name="prevItem" value="<%=rsEdit.getString("item_id")%>">
+      <input type="hidden" class="form-control" id="prevMctype" name="prevMctype" value="<%=rsEdit.getString("machine_id")%>">
+
       Challan Date
       <input type="date" class="form-control" id="challanDate" name="challanDate" value="<%=rsEdit.getString("challan_date")%>">
     </div>

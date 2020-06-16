@@ -1,6 +1,6 @@
 # Hiller Inventory Management System
 
-[DB SCHEMA](https://github.com/Laha988017/hiller/dbSchema.jpeg)
+[DB SCHEMA](/dbSchema.jpeg)
 
 ## Using Git
 

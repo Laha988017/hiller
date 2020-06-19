@@ -36,11 +36,9 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
   <script type="text/javascript">
-      function alt(){
-    alert("Do you want to delete?");
-  }
-
+    
   function getqih()
           {
      
@@ -119,14 +117,6 @@
               </button><span class="sr-only"></span>
               </a>
               
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="dashboard_jobwork.jsp">
-              <span data-feather="user"></span>
-              <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
-                Jobwork done
-              </button><span class="sr-only"></span>
-              </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="dashboard_sale.jsp">
@@ -272,6 +262,9 @@
     String sql = "select * from joballocation natural join item natural join machine order by joballocation_id desc";
     ResultSet rs = st.executeQuery(sql);
     while(rs.next()){
+      String item_id=rs.getString("item_id");
+      String machine_id=rs.getString("machine_id");
+      String quantity=rs.getString("quantity");
     %>
             <tr>
               <td><%=rs.getString("allocation_date")%></td>
@@ -280,7 +273,7 @@
               <td><%=rs.getString("machine_type")%></td>
               <td><%=rs.getString("quantity")%></td>
               <td><%=rs.getString("challan_no")%></td>
-              <td><a href= "deleteja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>"><button type="button" class="btn btn-secondary" onclick="alt();">Delete</button></a> 
+              <td><a id="delete-btn" href= "deleteja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>&item_id=<%=item_id%>&machine_id=<%=machine_id%>&quantity=<%=quantity%>"><button type="button" class="btn btn-secondary" onclick="alt();">Delete</button></a> 
                 <a href= "updateja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>"><button type="button" class="btn btn-secondary">Edit</button></a></td>
             </tr>
   <%}
@@ -307,6 +300,64 @@
   <jsp:forward page ="logout.jsp"/>
 <%}
 %>
+<script>
+
+    var url_string = window.location.search; //window.location.href
+  var url = new URLSearchParams(url_string);
+  var c = url.get("c");
+  console.log(c);
+  if(c=="success")
+  {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Data inserted successfully',
+      showConfirmButton: true,
+      confirmButtonColor: '#3085d6'
+    }).then((result)=>{
+        document.location.href = 'dashboard1.jsp';
+      })
+        console.log("in if");
+    console.log("in if");
+  }
+  else if(c=="fail")
+  {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'error',
+      title: 'Data is not inserted as same challan is given',
+      showConfirmButton: true,
+      confirmButtonColor: '#3085d6'
+    }).then((result)=>{
+        document.location.href = 'dashboard1.jsp';
+      })
+    console.log("in else if");
+  }
+
+    $('#delete-btn').on('click',function(e){
+    e.preventDefault();
+    const href = $(this).attr('href');
+    console.log(href);
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Record will be deleted",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Delete Record!'
+      }).then((result) => {
+      if (result.value) {
+          document.location.href = href;
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'Success'
+          )
+      }
+  })
+    })
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>

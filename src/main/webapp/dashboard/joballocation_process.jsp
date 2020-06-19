@@ -40,6 +40,9 @@
           int quantitytot = qih - quantityInt;
             j=statement.executeUpdate("update stock set quantity_in_hand = "+quantitytot+" where item_id = "+item_id+" and machine_id = "+machine_id);
         }
+        String site = new String("dashboard_ja.jsp?c=success");
+         response.setStatus(response.SC_MOVED_TEMPORARILY);
+         response.setHeader("Location", site);
       }
 
       else if(qih==quantityInt){
@@ -51,15 +54,23 @@
             out.println("<center>Record inserted to Job Allocation</center>");
             j=statement.executeUpdate("Delete from stock  where item_id = "+item_id+" and machine_id = "+machine_id);
         }
-      }
-      String site = new String("dashboard_ja.jsp?c=success");
+        String site = new String("dashboard_ja.jsp?c=success");
          response.setStatus(response.SC_MOVED_TEMPORARILY);
          response.setHeader("Location", site);
+      }
+      else{
 
+      out.println("Quantity given cannot be greater than Quantity In Hand");
+      String site = new String("dashboard_ja.jsp?c=failqih");
+         response.setStatus(response.SC_MOVED_TEMPORARILY);
+         response.setHeader("Location", site);
+    }
+
+      
     }
     else{
     out.println("Job No. already exist !!");
-    String site = new String("dashboard_ja.jsp?c=fail");
+     String site = new String("dashboard_ja.jsp?c=failjobno");
          response.setStatus(response.SC_MOVED_TEMPORARILY);
          response.setHeader("Location", site); 
 

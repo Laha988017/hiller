@@ -306,7 +306,7 @@ Statement stVendor = con.createStatement();
     Swal.fire({
       position: 'top-end',
       icon: 'error',
-      title: 'Data is not inserted as same challan is given',
+      title: 'Data is not inserted as same Quantity is greater than in-hand Quantity',
       showConfirmButton: true,
       confirmButtonColor: '#3085d6'
     }).then((result)=>{

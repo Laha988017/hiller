@@ -315,24 +315,40 @@
       showConfirmButton: true,
       confirmButtonColor: '#3085d6'
     }).then((result)=>{
-        document.location.href = 'dashboard1.jsp';
+        document.location.href = 'dashboard_ja.jsp';
       })
         console.log("in if");
     console.log("in if");
   }
-  else if(c=="fail")
+  else if(c=="failqih")
   {
     Swal.fire({
       position: 'top-end',
       icon: 'error',
-      title: 'Data is not inserted as same challan is given',
+      title: 'Data is not inserted as Quantity is greater than in-hand Quantity',
       showConfirmButton: true,
       confirmButtonColor: '#3085d6'
     }).then((result)=>{
-        document.location.href = 'dashboard1.jsp';
+        document.location.href = 'dashboard_ja.jsp';
       })
     console.log("in else if");
   }
+
+  else if(c=="failjobno")
+  {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'error',
+      title: 'Job Number Already Exist',
+      showConfirmButton: true,
+      confirmButtonColor: '#3085d6'
+    }).then((result)=>{
+        document.location.href = 'dashboard_ja.jsp';
+      })
+    console.log("in else if");
+  }
+
+
 
     $('#delete-btn').on('click',function(e){
     e.preventDefault();

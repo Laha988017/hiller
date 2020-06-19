@@ -196,3 +196,28 @@ update input set challan_date = '"+challan_date+"' challan_no = '"+challan_no+"'
 update input set challan_date = '"+challan_date+"' challan_no = '"+challan_no+"' input_date = '"+input_date+"' vendor_id = '"+vendor_id+"' item_id = '"+item_id+"' machine_id = '"+machine_id+"' quantity = '"+qty+"' where input_id = '"+input_date+"'"
 
 update input set challan_date = '2020-05-01',challan_no = 'C1532',input_date = '2020-05-04',vendor_id = '2 item_id = '2',machine_id = '4',quantity = '380' where input_id = '25'
+
+CREATE TABLE joballocation
+(
+	joballocation_id SERIAL PRIMARY KEY,
+	job_no VARCHAR(50) NOT NULL,
+	allocation_date VARCHAR(50) NOT NULL ,
+	item_id INTEGER NOT NULL ,
+	machine_id INTEGER NOT NULL ,
+	quantity VARCHAR(100) NOT NULL,
+	challan_no VARCHAR(100) NOT NULL,
+	FOREIGN KEY (item_id) REFERENCES item,
+	FOREIGN KEY (machine_id) REFERENCES machine
+);
+
+CREATE TABLE jobwork
+(
+	job_no serial primary key;
+	jobwork_flag integer NOT NULL,
+	start_date varchar(20) NOT NULL,
+	complete_date varchar(20) NOT NULL
+);
+
+select to_date((select challan_date from input where quantity='450'),'DDMMYYYY');
+
+select * from input where challan_date between '2020-04-01' and '2020-06-05' and input_id=30;

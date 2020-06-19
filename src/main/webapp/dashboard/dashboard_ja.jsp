@@ -1,3 +1,27 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@page import="java.sql.*"%>
+<%@page import="java.util.*"%>
+<%@page import="pkg.*"%>
+<jsp:useBean id = "dbcon" scope = "page" class = "pkg.Dbconpsql"></jsp:useBean>
+<%User user = (User)session.getAttribute("user");
+  int qih=0;
+  if(user != null)
+  {
+    Connection con = null;
+    try{
+    con = dbcon.getCon();
+  Statement stVendor = con.createStatement();
+  Statement stItem = con.createStatement();
+  Statement stMctype = con.createStatement();
+
+  String sqlVendor = "select * from vendor";
+  String sqlItem = "select * from item";
+  String sqlMctype = "select * from machine";
+
+  ResultSet rsVendor = stVendor.executeQuery(sqlVendor);
+  ResultSet rsItem = stItem.executeQuery(sqlItem);
+  ResultSet rsMctype = stMctype.executeQuery(sqlMctype);
+%>
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,15 +31,39 @@
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.0.1">
     <title>Dashboard</title>
-
-    
-
     <!-- Bootstrap core CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+      function alt(){
+    alert("Do you want to delete?");
+  }
 
+  function getqih()
+          {
+     
+             //var joballocation_id=document.getElementById("joballocation_id").value;
+              var allocation_date=document.getElementById("jaDate").value;
+              var jobno=document.getElementById("jobNo").value;
+
+              var item_id=document.querySelector("#item");
+              var item_idv = item_id.value;
+
+              var machine_id=document.querySelector("#mctype");
+              var machine_idv = machine_id.value;
+
+              if(item_id!="" && machine_id!="")
+             {
+                window.location.href = "getqih.jsp?item_id="+item_idv+"&machine_id="+machine_idv+"&jaDate="+allocation_date+"&jobno="+jobno;
+                return false;
+             }
+     
+
+          }
+
+  </script>
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -73,6 +121,14 @@
               
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="dashboard_jobwork.jsp">
+              <span data-feather="user"></span>
+              <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+                Jobwork done
+              </button><span class="sr-only"></span>
+              </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="dashboard_sale.jsp">
               <span data-feather="shopping-cart"></span>
               <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample">
@@ -118,8 +174,139 @@
         </ul>
       </div>
     </nav>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Job Allocation</h1>
+      </div>
+
+  <form method="get" action="joballocation_process.jsp">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      Date
+      <input type="date" class="form-control" id="jaDate" name="jaDate">
+    </div>
+    <div class="form-group col-md-6">
+      Job No
+      <input type="text" class="form-control" id="jobNo" name="jobNo">
+    </div>
+  </div>
+    
+    <div class="form-row">
+    <div class="form-group col-md-6">
+      Item
+      <select class="custom-select" name="item" id="item">
+        <option selected></option>
+        <%while(rsItem.next()){%>
+        <option value="<%=rsItem.getString("item_id")%>"><%=rsItem.getString("item_name")%></option>
+      <%}
+        %>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      Machine Type
+      <select class="custom-select" name="mctype" id="mctype">
+        <option selected></option>
+        <%while(rsMctype.next()){%>
+        <option value="<%=rsMctype.getString("machine_id")%>"><%=rsMctype.getString("machine_type")%></option>
+      <%}
+        %>
+      </select>
+    </div>
+  </div>
+    <div class="form-row">
+    <div class="form-group col-md-6">
+      Quantity In Hand
+      <%
+        if(request.getParameter ("item_id")!=null && request.getParameter("machine_id")!=null){
+          String item_id=request.getParameter("item_id");
+          String machine_id=request.getParameter("machine_id");
+
+    con = dbcon.getCon();
+    Statement statement = con.createStatement();
+    String strQuery = "SELECT quantity_in_hand FROM stock where item_id='"+item_id+"' and machine_id='"+machine_id+"'";
+    ResultSet rs1 =statement.executeQuery(strQuery);
+    rs1.next();
+   
+   qih=rs1.getInt("quantity_in_hand");
+ }
+      
+      %>
+      <input type="Number" class="form-control" id="qty_in_hand" name="qty_in_hand" onfocus="return getqih();" value="<%=qih%>" readonly>
+      
+    </div>
+  </div>
+    <div class="form-row">
+    <div class="form-group col-md-6">
+      Challan No.
+      <input type="text" class="form-control" id="challanNo" name="challanNo">
+    </div>
+    <div class="form-group col-md-6">
+      Quantity
+      <input type="Number" class="form-control" id="quantity" name="quantity">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="clear" class="btn btn-primary">Clear</button>
+</form>
+<hr>
+
+<div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Job No.</th>
+              <th>Item</th>
+              <th>M/C Type</th>
+              <th>Challan No.</th>
+              <th>Quantity</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+<%
+  //if(request.getParameter("challanNo") != null)
+  //{
+    Statement st = con.createStatement();
+    String sql = "select * from joballocation natural join item natural join machine order by joballocation_id desc";
+    ResultSet rs = st.executeQuery(sql);
+    while(rs.next()){
+    %>
+            <tr>
+              <td><%=rs.getString("allocation_date")%></td>
+              <td><%=rs.getString("job_no")%></td>
+              <td><%=rs.getString("item_name")%></td>
+              <td><%=rs.getString("machine_type")%></td>
+              <td><%=rs.getString("quantity")%></td>
+              <td><%=rs.getString("challan_no")%></td>
+              <td><a href= "deleteja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>"><button type="button" class="btn btn-secondary" onclick="alt();">Delete</button></a> 
+                <a href= "updateja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>"><button type="button" class="btn btn-secondary">Edit</button></a></td>
+            </tr>
+  <%}
+//}
+%>
+          </tbody>
+        </table>
+      </div>
+
+    </main>
+
   </div>
 </div>
+
+        <%}
+        catch(Exception e){
+        out.println(e);
+      }
+      finally{
+      dbcon.destroyCon(con);
+    }
+      }
+  else{%>
+  <jsp:forward page ="logout.jsp"/>
+<%}
+%>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>

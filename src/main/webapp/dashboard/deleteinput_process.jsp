@@ -18,7 +18,7 @@
     if(rs.getString("quantity").equals(rs.getString("quantity_in_hand"))){
     //jst delete the row
       i=st.executeUpdate("delete from stock where item_id = '"+rs.getString("item_id")+"' and machine_id ='"+rs.getString("machine_id")+"'");
-	}else{
+	   }else{
 		// make quantinhand less by qtyinchallan
     int qtyc = Integer.parseInt(rs.getString("quantity"));
     int qih = rs.getInt("quantity_in_hand");

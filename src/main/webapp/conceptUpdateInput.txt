@@ -1,0 +1,28 @@
+To update Input Items
+
+Data needed: previtem_id
+			 prevmachine_id
+			 prevqty
+			 currentitem_id
+			 currentmachine_id
+			 currentqty
+
+
+	
+	Case 1.1: The previousqty with previtem_id and prevmachine_id is equal to qantity_in_hand with previtem_id and prevmachine_id i.e only one challan no.s input is there
+
+		// Delete that entry from stock table with previtem_id and prevmachine_id
+
+	Case 1.2: The previousqty previtem_id and prevmachine_id is NOT equal to qantity_in_hand i.e more than one challan no.s input is there
+
+		// update stock table by deducing the (quantity_in_hand - prevquantity) with previtem_id and prevmachine_id
+
+	Case 2.1: The edited inputs machine_id and item_id has an earlier stock i.e currentitem_id and currentmachine_id
+
+		//update the stock by adding the latest quantity + quantity_in_hand
+
+	Case 2.2: The edited inputs machine_id and item_id has NO earlier stock
+
+		//insert into stock with currentitem_id ,currentmachine_id and currentquantity
+	
+	//update the input table

@@ -1,3 +1,28 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@page import="java.sql.*"%>
+<%@page import="java.util.*"%>
+<%@page import="pkg.*"%>
+<jsp:useBean id = "dbcon" scope = "page" class = "pkg.Dbconpsql"></jsp:useBean>
+<%User user = (User)session.getAttribute("user");
+  if(user != null)
+  {
+    Connection con = null;
+    try{
+    con = dbcon.getCon();
+
+  Statement stVendor = con.createStatement();
+  Statement stItem = con.createStatement();
+  Statement stMctype = con.createStatement();
+
+  String sqlVendor = "select * from vendor";
+  String sqlItem = "select * from item";
+  String sqlMctype = "select * from machine";
+
+  ResultSet rsVendor = stVendor.executeQuery(sqlVendor);
+  ResultSet rsItem = stItem.executeQuery(sqlItem);
+  ResultSet rsMctype = stMctype.executeQuery(sqlMctype);
+    %>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,10 +31,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.0.1">
-    <title>Dashboard</title>
-
-    
-
+    <title>Input Item Report</title>
     <!-- Bootstrap core CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -73,6 +95,14 @@
               
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="dashboard_jobwork.jsp">
+              <span data-feather="user"></span>
+              <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+                Jobwork done
+              </button><span class="sr-only"></span>
+              </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="dashboard_sale.jsp">
               <span data-feather="shopping-cart"></span>
               <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample">
@@ -118,8 +148,196 @@
         </ul>
       </div>
     </nav>
+
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Input Item Report</h1>
+      </div>
+      <h1 class="h3">Filters</h1>
+
+        <form method="get" action="dashboard_reportsInput.jsp">
+          <div class="form-row">
+            <div class="form-group col-md-3">
+            Challan From date
+            <input type="date" class="form-control" id="challanDateFrom" name="challanDateFrom">
+            </div>
+            <div class="form-group col-md-3">
+            To date
+            <input type="date" class="form-control" id="challanDateTo" name="challanDateTo">
+            </div>
+          
+            <div class="form-group col-md-3">
+            Recieved from date
+            <input type="date" class="form-control" id="recievedDateFrom" name="recievedDateFrom">
+            </div>
+            <div class="form-group col-md-3">
+              To date
+              <input type="date" class="form-control" id="recievedDateTo" name="recievedDateTo">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              Item
+              <select class="custom-select" name="item">
+              <option selected></option>
+              <%while(rsItem.next()){%>
+              <option value="<%=rsItem.getString("item_id")%>"><%=rsItem.getString("item_name")%></option>
+              <%}
+              %>
+              </select>
+            </div>
+            <div class="form-group col-md-3">
+              Machine Type
+              <select class="custom-select" name="mctype">
+                <option selected></option>
+                <%while(rsMctype.next()){%>
+                <option value="<%=rsMctype.getString("machine_id")%>"><%=rsMctype.getString("machine_type")%></option>
+                <%}
+                %>
+              </select>
+            </div>
+          
+            <div class="form-group col-md-3">
+              Vendor
+              <select class="custom-select" name="vendor">
+                <option selected></option>
+                <%
+                while(rsVendor.next()){%>
+                <option value="<%=rsVendor.getString("vendor_id")%>"><%=rsVendor.getString("vendor_name")%></option>
+                <%}
+                %>
+              </select>
+            </div>
+            <div class="form-group col-md-3">
+              Challan No
+              <input type="text" class="form-control" id="challanNo" name="challanNo">
+            </div>
+          </div>
+          <div class="align-center">
+            <button type="submit" class="btn btn-success">Search</button>
+            <button type="clear" class="btn btn-warning">Clear</button>
+          </div>
+        </form>
+    
+    <hr>
+
+    <%
+      String challanDateFrom = request.getParameter("challanDateFrom");
+      String challanDateTo = request.getParameter("challanDateTo");
+      String recievedDateFrom = request.getParameter("recievedDateFrom");
+      String recievedDateTo = request.getParameter("recievedDateTo");
+      String item_id = request.getParameter("item");
+      String machine_id = request.getParameter("mctype");
+      String vendor_id = request.getParameter("vendor");
+      String challan_no = request.getParameter("challanNo");
+      String sql ;
+
+      if (challanDateFrom != null && challanDateTo == null) 
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine where challan_date like '"+challanDateFrom+"'";
+      }
+      else if (challanDateFrom != null && challanDateTo != null)
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine where challan_date between '"+challanDateFrom+"' and '"+challanDateTo+"'";
+      }
+      else if (recievedDateFrom!= null && recievedDateTo == null)
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine where input_date like '"+recievedDateFrom+"'";
+      }
+      else if (recievedDateFrom!= null && recievedDateTo != null)
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine where input_date between '"+recievedDateFrom+"' and '"+recievedDateTo+"'";
+      }
+      else if (item_id!= null && machine_id== null && vendor_id== null && challan_no== null)
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine where item_id = "+item_id;
+      }
+      else if (item_id== null && machine_id!= null && vendor_id== null && challan_no== null)
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine where machine_id = "+machine_id;
+      }
+      else if (item_id== null && machine_id== null && vendor_id!= null && challan_no== null)
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine where vendor_id = "+vendor_id;
+      }
+      else if (item_id== null && machine_id== null && vendor_id== null && challan_no!= null)
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine where challan_no = "+challan_no;
+      }
+      else if (item_id!= null && machine_id!= null && vendor_id== null && challan_no== null)
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine where item_id = "+item_id+" and machine_id = "+machine_id;
+      }
+      else if (item_id== null && machine_id!= null && vendor_id!= null && challan_no== null)
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine where vendor_id = "+vendor_id+" and machine_id = "+machine_id;
+      }
+      else if (item_id== null && machine_id== null && vendor_id!= null && challan_no!= null)
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine where vendor_id = "+vendor_id+" and challan_no = "+challan_no;
+      }
+      else if (item_id!= null && machine_id== null && vendor_id== null && challan_no!= null)
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine where item_id = "+item_id+" and challan_no = "+challan_no;
+      }
+      else
+      {
+        sql = "select * from input natural join vendor natural join item natural join machine";
+      }
+    %>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>Recieved Date</th>
+              <th>Challan No.</th>
+              <th>Challan Date</th>
+              <th>Vendor</th>
+              <th>Item</th>
+              <th>M/C Type</th>
+              <th>Quantity</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+<%
+  
+    Statement st = con.createStatement();
+    ResultSet rs = st.executeQuery(sql);
+    while(rs.next()){
+    %>
+            <tr>
+              <td><%=rs.getString("input_date")%></td>
+              <td><%=rs.getString("challan_no")%></td>
+              <td><%=rs.getString("challan_date")%></td>
+              <td><%=rs.getString("vendor_name")%></td>
+              <td><%=rs.getString("item_name")%></td>
+              <td><%=rs.getString("machine_type")%></td>
+              <td><%=rs.getString("quantity")%></td>
+              <td><a id="delete-btn" href= "deleteinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button type="button" class="btn btn-secondary">Delete</button></a> 
+                <a href= "updateinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button id="edit-btn" type="button" class="btn btn-secondary">Edit</button></a></td>
+            </tr>
+  <%}
+  
+%>
+          </tbody>
+        </table>
+      </div>
+    </main>
   </div>
 </div>
+        <%}
+        catch(Exception e){
+        out.println(e);
+      }
+      finally{
+      dbcon.destroyCon(con);
+    }
+      }
+  else{%>
+  <jsp:forward page ="logout.jsp"/>
+<%}
+%>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>

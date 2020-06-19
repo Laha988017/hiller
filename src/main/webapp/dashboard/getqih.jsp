@@ -6,21 +6,33 @@
 <%User user = (User)session.getAttribute("user");
   if(user != null)
   {
+    int qih=0;
+    String allocation_date=request.getParameter("jaDate");
+    String job_no=request.getParameter("jobno");
+    String item_idcr=request.getParameter("item_id");
+    String machine_idcr=request.getParameter("machine_id");
+
     Connection con = null;
     try{
     con = dbcon.getCon();
-
-
+    Statement statementqih = con.createStatement();
+    String strQueryqih = "SELECT quantity_in_hand FROM stock where item_id="+item_idcr+" and machine_id="+machine_idcr;
+    ResultSet rsqih =statementqih.executeQuery(strQueryqih);
+    if(rsqih.next())
+      qih=rsqih.getInt("quantity_in_hand");
+   // out.println(qih);
+Statement stVendor = con.createStatement();
   Statement stItem = con.createStatement();
   Statement stMctype = con.createStatement();
 
+  String sqlVendor = "select * from vendor";
   String sqlItem = "select * from item";
   String sqlMctype = "select * from machine";
 
+  ResultSet rsVendor = stVendor.executeQuery(sqlVendor);
   ResultSet rsItem = stItem.executeQuery(sqlItem);
   ResultSet rsMctype = stMctype.executeQuery(sqlMctype);
-    %>
-
+%>
 <!doctype html>
 <html lang="en">
   <head>
@@ -29,13 +41,18 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.0.1">
-    <title>Input Item Report</title>
+    <title>Dashboard</title>
     <!-- Bootstrap core CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  <script type="text/javascript">
+      function alt(){
+    alert("Do you want to delete?");
+  }
 
+  </script>
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -84,7 +101,7 @@
               
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="dashboard_ja.jsp">
+            <a class="nav-link active" href="dashboard_ja.jsp">
               <span data-feather="users"></span>
               <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
                 Job Allocation
@@ -110,9 +127,9 @@
               
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="#">
+            <a class="nav-link" href="#">
               <span data-feather="file"></span>
-              <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample4" href="dashboard_reports.jsp" aria-expanded="true" aria-controls="collapseExample">
+              <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample4" href="dashboard_reports.jsp" aria-expanded="false" aria-controls="collapseExample">
                 Reports
               </button><span class="sr-only">(current)</span>
               </a>
@@ -120,7 +137,7 @@
                 <div class="card card-body">
                   <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="dashboard_reportsInput.jsp">
+                        <a class="nav-link " href="dashboard_reportsInput.jsp">
                             Input Report
                         </a>
                     </li>
@@ -149,87 +166,122 @@
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Input Item Report</h1>
+        <h1 class="h2">Job Allocation</h1>
       </div>
-      <h1 class="h3">Filters</h1>
 
-        <form method="get" action="dashboard_reportsInput.jsp">
-          
-          <div class="form-row">
-            <div class="form-group col-md-3">
-              Item
-              <select class="custom-select" name="item">
-              <option selected></option>
-              <%while(rsItem.next()){%>
-              <option value="<%=rsItem.getString("item_id")%>"><%=rsItem.getString("item_name")%></option>
-              <%}
-              %>
-              </select>
-            </div>
-            <div class="form-group col-md-3">
-              Machine Type
-              <select class="custom-select" name="mctype">
-                <option selected></option>
-                <%while(rsMctype.next()){%>
-                <option value="<%=rsMctype.getString("machine_id")%>"><%=rsMctype.getString("machine_type")%></option>
-                <%}
-                %>
-              </select>
-            </div>
-          </div>
-          <div class="align-center">
-            <button type="submit" class="btn btn-success">Search</button>
-            <button type="clear" class="btn btn-warning">Clear</button>
-          </div>
-        </form>
+  <form method="get" action="joballocation_process.jsp">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      Date
+      <input type="date" class="form-control" id="jaDate" name="jaDate" value="<%=allocation_date%>">
+    </div>
+    <div class="form-group col-md-6">
+      Job No
+      <input type="text" class="form-control" id="jobNo" name="jobNo" value="<%=job_no%>">
+    </div>
+  </div>
     
-    <hr>
+    <div class="form-row">
+    <div class="form-group col-md-6">
+      Item
+      <select class="custom-select" name="item">
+        <option selected></option>
+        <%while(rsItem.next()){%>
+        <option value="<%=rsItem.getString("item_id")%>"
+            <%if(rsItem.getString("item_id").equals(item_idcr))
+               {%>
+                  selected
+               <%}
+              %>
+          ><%=rsItem.getString("item_name")%></option>
+      <%}
+        %>
+      </select>
+    </div>
+    <div class="form-group col-md-6">
+      Machine Type
+      <select class="custom-select" name="mctype">
+        <option selected></option>
+        <%while(rsMctype.next()){%>
+        <option value="<%=rsMctype.getString("machine_id")%>"
+            <%if(rsMctype.getString("machine_id").equals(machine_idcr))
+               {%>
+                  selected
+               <%}
+              %>
+          ><%=rsMctype.getString("machine_type")%></option>
+      <%}
+        %>
+      </select>
+    </div>
+  </div>
+    <div class="form-row">
+    <div class="form-group col-md-6">
+      Quantity In Hand
 
-    <%
-      String challanDateFrom = request.getParameter("challanDateFrom");
-      String challanDateTo = request.getParameter("challanDateTo");
-      String recievedDateFrom = request.getParameter("recievedDateFrom");
-      String recievedDateTo = request.getParameter("recievedDateTo");
-      String item_id = request.getParameter("item");
-      String machine_id = request.getParameter("mctype");
-      String vendor_id = request.getParameter("vendor");
-      String challan_no = request.getParameter("challanNo");
-      String sql ;
-      int count=1;
+      <input type="Number" class="form-control" id="qty_in_hand" name="qty_in_hand" value="<%=qih%>" readonly>
       
-    %>
-    <div class="table-responsive text-center">
+    </div>
+  </div>
+    <div class="form-row">
+    <div class="form-group col-md-6">
+      Challan No.
+      <input type="text" class="form-control" id="challanNo" name="challanNo">
+    </div>
+    <div class="form-group col-md-6">
+      Quantity
+      <input type="Number" class="form-control" id="quantity" name="quantity">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="clear" class="btn btn-primary">Clear</button>
+</form>
+<hr>
+
+<div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
             <tr>
-              <th>#</th>
+              <th>Date</th>
+              <th>Job No.</th>
               <th>Item</th>
               <th>M/C Type</th>
-              <th>Quantity in hand</th>
+              <th>Challan No.</th>
+              <th>Quantity</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
 <%
-  
+  //if(request.getParameter("challanNo") != null)
+  //{
     Statement st = con.createStatement();
-    sql = "select * from stock natural join item natural join machine";
+    String sql = "select * from joballocation natural join item natural join machine order by joballocation_id desc";
     ResultSet rs = st.executeQuery(sql);
     while(rs.next()){
     %>
             <tr>
-              <td><%=count++%></td>
+              <td><%=rs.getString("allocation_date")%></td>
+              <td><%=rs.getString("job_no")%></td>
               <td><%=rs.getString("item_name")%></td>
               <td><%=rs.getString("machine_type")%></td>
-              <td><%=rs.getString("quantity_in_hand")%></td>
+              <td><%=rs.getString("quantity")%></td>
+              <td><%=rs.getString("challan_no")%></td>
+              <td><a href= "deleteja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>"><button type="button" class="btn btn-secondary" onclick="alt();">Delete</button></a> 
+                <a href= "updateja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>"><button type="button" class="btn btn-secondary">Edit</button></a></td>
             </tr>
   <%}
+//}
 %>
           </tbody>
         </table>
       </div>
+
     </main>
+
   </div>
 </div>
+
         <%}
         catch(Exception e){
         out.println(e);

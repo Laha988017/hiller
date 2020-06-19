@@ -73,6 +73,14 @@
               
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="dashboard_jobwork.jsp">
+              <span data-feather="user"></span>
+              <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+                Jobwork done
+              </button><span class="sr-only"></span>
+              </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link active" href="dashboard_sale.jsp">
               <span data-feather="shopping-cart"></span>
               <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample">

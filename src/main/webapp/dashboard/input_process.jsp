@@ -14,6 +14,7 @@
     String machine_id=request.getParameter("mctype");
     String qty=request.getParameter("qty");
     Connection con = null;
+    int flag = 0;
     try{
     con = dbcon.getCon();
     Statement statement = con.createStatement();
@@ -24,18 +25,12 @@
     if(Countrow.equals("0")){
         int i=statement.executeUpdate("insert into input(challan_date,challan_no,input_date,vendor_id,item_id,machine_id,quantity)values('"+challan_date+"','"+challan_no+"','"+input_date+"','"+vendor_id+"','"+item_id+"','"+machine_id+"','"+qty+"')");
         out.println("<center>Data is successfully inserted!</center>");
-
-        
-        
-
         Statement st = con.createStatement();
         String q = "select count(*) from stock where item_id = '"+item_id+"' and machine_id ='"+machine_id+"'";
         ResultSet rs = st.executeQuery(q);
         rs.next();
         String x = rs.getString(1);
-        
         if(x.equals("1")){
-
         Statement stx = con.createStatement();
         String qx = "select quantity_in_hand from stock where item_id = '"+item_id+"' and machine_id ='"+machine_id+"'";
         ResultSet rsx = stx.executeQuery(qx);
@@ -47,13 +42,17 @@
         }else{
             i=st.executeUpdate("insert into stock(item_id,machine_id,quantity_in_hand) values('"+item_id+"','"+machine_id+"','"+qty+"')");
         }
+        String site = new String("dashboard1.jsp?c=success");
+         response.setStatus(response.SC_MOVED_TEMPORARILY);
+         response.setHeader("Location", site); 
     }
     else{
     out.println("Challan No. already exist !!");
-  }
-  String site = new String("dashboard1.jsp");
+    String site = new String("dashboard1.jsp?c=fail");
          response.setStatus(response.SC_MOVED_TEMPORARILY);
          response.setHeader("Location", site); 
+  }
+  
   }
   catch(Exception e){
   out.println(e);

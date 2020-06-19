@@ -35,11 +35,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-  <script type="text/javascript">
-      function alt(){
-    alert("Do you want to delete?");
-  }
-  </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;
@@ -60,7 +57,7 @@
     <link href="dashboard.css" rel="stylesheet">
   </head>
   <body>
-    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow" >
   <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Hiller Inventory</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -94,7 +91,14 @@
                 Job Allocation
               </button><span class="sr-only"></span>
               </a>
-              
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard_jobwork.jsp">
+              <span data-feather="user"></span>
+              <button class="btn" type="button" data-toggle="collapse" data-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample">
+                Jobwork done
+              </button><span class="sr-only"></span>
+              </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="dashboard_sale.jsp">
@@ -117,24 +121,24 @@
                   <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link " href="dashboard_reportsInput.jsp">
-                            Input Report
+                          Input Report
                         </a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link " href="dashboard_reportsJa.jsp">
                           Job Allocation Report
                       </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link " href="dashboard_reportsSales.jsp">
-                        Sale out Report
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link " href="dashboard_reportsStock.jsp">
-                        Stock Report
-                    </a>
-                </li>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="dashboard_reportsSales.jsp">
+                          Sale out Report
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link " href="dashboard_reportsStock.jsp">
+                          Stock Report
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -147,12 +151,12 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Input Items</h1>
       </div>
-
+      
   <form method="get" action="input_process.jsp">
   <div class="form-row">
     <div class="form-group col-md-6">
       Challan Date
-      <input type="date" class="form-control" id="challanDate" name="challanDate">
+      <input type="date" class="form-control" id="challanDate" name="challanDate" required>
     </div>
     <div class="form-group col-md-6">
       Challan No
@@ -162,11 +166,11 @@
     <div class="form-row">
     <div class="form-group col-md-6">
       Recieved Date
-      <input type="date" class="form-control" id="recievedDate" name="recievedDate">
+      <input type="date" class="form-control" id="recievedDate" name="recievedDate" required>
     </div>
     <div class="form-group col-md-6">
       Vendor
-      <select class="custom-select" name="vendor">
+      <select class="custom-select" name="vendor" required>
         <option selected></option>
 <%
         while(rsVendor.next()){%>
@@ -179,7 +183,7 @@
     <div class="form-row">
     <div class="form-group col-md-6">
       Item
-      <select class="custom-select" name="item">
+      <select class="custom-select" name="item" required>
         <option selected></option>
         <%while(rsItem.next()){%>
         <option value="<%=rsItem.getString("item_id")%>"><%=rsItem.getString("item_name")%></option>
@@ -189,7 +193,7 @@
     </div>
     <div class="form-group col-md-6">
       Machine Type
-      <select class="custom-select" name="mctype">
+      <select class="custom-select" name="mctype" required>
         <option selected></option>
         <%while(rsMctype.next()){%>
         <option value="<%=rsMctype.getString("machine_id")%>"><%=rsMctype.getString("machine_type")%></option>
@@ -201,11 +205,11 @@
     <div class="form-row">
     <div class="form-group col-md-6">
       Quantity
-      <input type="Number" class="form-control" id="qty" name="qty">
+      <input type="Number" class="form-control" id="qty" name="qty" required>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-  <button type="clear" class="btn btn-primary">Clear</button>
+  <button type="submit" class="btn btn-success">Add</button>
+  <button type="clear" class="btn btn-warning">Clear</button>
 </form>
 <hr>
 
@@ -240,8 +244,8 @@
               <td><%=rs.getString("item_name")%></td>
               <td><%=rs.getString("machine_type")%></td>
               <td><%=rs.getString("quantity")%></td>
-              <td><a href= "deleteinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button type="button" class="btn btn-secondary" onclick="alt();">Delete</button></a> 
-                <a href= "updateinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button type="button" class="btn btn-secondary">Edit</button></a></td>
+              <td><a id="delete-btn" href= "deleteinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button type="button" class="btn btn-secondary">Delete</button></a> 
+                <a href= "updateinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button id="edit-btn" type="button" class="btn btn-secondary">Edit</button></a></td>
             </tr>
   <%}
 //}
@@ -267,6 +271,63 @@
   <jsp:forward page ="logout.jsp"/>
 <%}
 %>
+<script type="text/javascript">
+  var url_string = window.location.search; //window.location.href
+  var url = new URLSearchParams(url_string);
+  var c = url.get("c");
+  console.log(c);
+  if(c=="success")
+  {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Data inserted successfully',
+      showConfirmButton: true,
+      confirmButtonColor: '#3085d6'
+    }).then((result)=>{
+        document.location.href = 'dashboard1.jsp';
+      })
+        console.log("in if");
+    console.log("in if");
+  }
+  else if(c=="fail")
+  {
+    Swal.fire({
+      position: 'top-end',
+      icon: 'error',
+      title: 'Data is not inserted as same challan is given',
+      showConfirmButton: true,
+      confirmButtonColor: '#3085d6'
+    }).then((result)=>{
+        document.location.href = 'dashboard1.jsp';
+      })
+    console.log("in else if");
+  }
+
+  $('#delete-btn').on('click',function(e){
+    e.preventDefault();
+    const href = $(this).attr('href');
+    console.log(href);
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Record will be deleted",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Delete Record!'
+      }).then((result) => {
+      if (result.value) {
+          document.location.href = href;
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+      }
+  })
+    })
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>

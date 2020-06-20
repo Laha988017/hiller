@@ -214,9 +214,9 @@
 <hr>
 
 <div class="table-responsive">
-        <table class="table table-striped table-sm">
+        <table class="table table-striped text-center table-sm table-bordered">
           <thead>
-            <tr>
+            <tr class="table-primary">
               <th>Recieved Date</th>
               <th>Challan No.</th>
               <th>Challan Date</th>
@@ -244,8 +244,16 @@
               <td><%=rs.getString("item_name")%></td>
               <td><%=rs.getString("machine_type")%></td>
               <td><%=rs.getString("quantity")%></td>
-              <td><a id="delete-btn" href= "deleteinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button type="button" class="btn btn-secondary">Delete</button></a> 
-                <a href= "updateinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button id="edit-btn" type="button" class="btn btn-secondary">Edit</button></a></td>
+              <%
+                Statement stjob = con.createStatement();
+                ResultSet rsjob = stjob.executeQuery("select item_id,machine_id from joballocation where item_id in (select DISTINCT item_id from input) and machine_id in (select DISTINCT machine_id from input)");
+                if(rsjob.next()){
+
+                }
+              %>
+              <td><a id="delete-btn" href= "deleteinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button type="button" class="btn btn-sm btn-danger">Delete</button></a> 
+                <a href= "updateinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button id="edit-btn" type="button" class="btn btn-sm btn-warning">Edit</button></a></td>
+              <%%>
             </tr>
   <%}
 //}

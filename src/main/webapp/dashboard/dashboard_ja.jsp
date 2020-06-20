@@ -242,9 +242,9 @@
 <hr>
 
 <div class="table-responsive">
-        <table class="table table-striped table-sm">
+        <table class="table table-striped table-sm text-center">
           <thead>
-            <tr>
+            <tr class="table-primary">
               <th>Date</th>
               <th>Job No.</th>
               <th>Item</th>
@@ -273,8 +273,8 @@
               <td><%=rs.getString("machine_type")%></td>
               <td><%=rs.getString("quantity")%></td>
               <td><%=rs.getString("challan_no")%></td>
-              <td><a id="delete-btn" href= "deleteja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>&item_id=<%=item_id%>&machine_id=<%=machine_id%>&quantity=<%=quantity%>"><button type="button" class="btn btn-secondary" onclick="alt();">Delete</button></a> 
-                <a href= "updateja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>"><button type="button" class="btn btn-secondary">Edit</button></a></td>
+              <td><a id="delete-btn" href= "deleteja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>&item_id=<%=item_id%>&machine_id=<%=machine_id%>&quantity=<%=quantity%>"><button type="button" class="btn btn-sm btn-danger" onclick="alt();">Delete</button></a> 
+                <a href= "updateja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>"><button type="button" class="btn btn-sm btn-warning">Edit</button></a></td>
             </tr>
   <%}
 //}

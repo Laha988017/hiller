@@ -228,7 +228,7 @@ Statement stVendor = con.createStatement();
 <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
-            <tr>
+            <tr class="table-primary">
               <th>Date</th>
               <th>Job No.</th>
               <th>Item</th>
@@ -254,8 +254,8 @@ Statement stVendor = con.createStatement();
               <td><%=rs.getString("machine_type")%></td>
               <td><%=rs.getString("quantity")%></td>
               <td><%=rs.getString("challan_no")%></td>
-              <td><a href= "deleteja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>"><button type="button" class="btn btn-secondary" onclick="alt();">Delete</button></a> 
-                <a href= "updateja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>"><button type="button" class="btn btn-secondary">Edit</button></a></td>
+              <td><a href= "deleteja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>"><button type="button" class="btn btn-sm btn-danger" onclick="alt();">Delete</button></a> 
+                <a href= "updateja_process.jsp?joballocation_id=<%=rs.getString("joballocation_id")%>"><button type="button" class="btn btn-sm btn-warning">Edit</button></a></td>
             </tr>
   <%}
 //}

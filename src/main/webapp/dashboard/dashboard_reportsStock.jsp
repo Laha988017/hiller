@@ -153,12 +153,13 @@
       </div>
       <h1 class="h3">Filters</h1>
 
-        <form method="get" action="" class="text-center align-items-center">
+      <div class="row row-cols-2 text-center">
+          <div class="col-md-6">
+        <form method="get" action="">
           
           <div class="form-row">
-            <div class="form-group col-md-3">
-            </div>
-            <div class="form-group col-md-3">
+            
+            <div class="form-group col-md-6">
               Item
               <select class="custom-select" name="item">
               <option selected></option>
@@ -168,7 +169,7 @@
               %>
               </select>
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-6">
               Machine Type
               <select class="custom-select" name="mctype">
                 <option selected></option>
@@ -184,34 +185,10 @@
             <button type="clear" class="btn btn-warning">Clear</button></p>
           </div>
         </form>
-        <div class="text-center align-items-center">
-            <p><a href="printStock.jsp"><button class="btn btn-primary">Print</button></a></p>
-        </div>
-    <hr>
-
-    <%
-      /*
-      String item_id = request.getParameter("item");
-      String machine_id = request.getParameter("mctype");
-      String sql1 = "";
-      int count=1;
-      out.println("item_id"+item_id);
-      out.println("machine_id"+machine_id);
-      if(request.getParameter("item")!=null && request.getParameter("mctype")!=null){
         
-        sql1 = "select * from stock natural join item natural join machine where item_id = "+request.getParameter("item");
-      }
-      else if(request.getParameter("item")!=null)
-      {
-        sql1 = "select * from stock natural join item natural join machine where item_id = "+item_id+" and machine_id = "+machine_id;
-      }
-      else if(request.getParameter("mctype")!=null)
-      {
-        sql1 = "select * from stock natural join item natural join machine where machine_id = "+request.getParameter("mctype");
-      }
-      */
-    %>
-    <div class="table-responsive text-center container">
+        </div>
+        <div class="col-md-6">
+          <div class="table-responsive text-center container">
         <table class="table table-striped table-sm">
           <thead>
             <tr>
@@ -244,6 +221,34 @@
           </tbody>
         </table>
       </div>
+      <p><a href="printStock.jsp"><button class="btn btn-primary">Print</button></a></p>
+        </div>
+      </div>
+    <hr>
+
+    <%
+      /*
+      String item_id = request.getParameter("item");
+      String machine_id = request.getParameter("mctype");
+      String sql1 = "";
+      int count=1;
+      out.println("item_id"+item_id);
+      out.println("machine_id"+machine_id);
+      if(request.getParameter("item")!=null && request.getParameter("mctype")!=null){
+        
+        sql1 = "select * from stock natural join item natural join machine where item_id = "+request.getParameter("item");
+      }
+      else if(request.getParameter("item")!=null)
+      {
+        sql1 = "select * from stock natural join item natural join machine where item_id = "+item_id+" and machine_id = "+machine_id;
+      }
+      else if(request.getParameter("mctype")!=null)
+      {
+        sql1 = "select * from stock natural join item natural join machine where machine_id = "+request.getParameter("mctype");
+      }
+      */
+    %>
+    
     </main>
   </div>
 </div>

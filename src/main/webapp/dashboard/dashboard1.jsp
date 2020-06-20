@@ -151,7 +151,8 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2">Input Items</h1>
       </div>
-      
+  <div class="row row-cols-2">
+  <div class="col-md-6">
   <form method="get" action="input_process.jsp">
   <div class="form-row">
     <div class="form-group col-md-6">
@@ -211,6 +212,44 @@
   <button type="submit" class="btn btn-success">Add</button>
   <button type="clear" class="btn btn-warning">Clear</button>
 </form>
+</div>
+<div class="col-md-6">
+  <div class="table-responsive text-center container">
+    <h1 class="h4">Stock</h1>
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr class="table-info">
+              <th>#</th>
+              <th>Item</th>
+              <th>M/C Type</th>
+              <th>Quantity in hand</th>
+            </tr>
+          </thead>
+          <tbody>
+    <%
+  
+    Statement ststock = con.createStatement();
+        //out.println(sql1);
+    int count=1;
+    String sql1 = "select * from stock natural join item natural join machine order by item_name,machine_type";
+    if(sql1 != null){
+    ResultSet rs = ststock.executeQuery(sql1);
+    while(rs.next()){
+    %>
+            <tr>
+              <td><%=count++%></td>
+              <td><%=rs.getString("item_name")%></td>
+              <td><%=rs.getString("machine_type")%></td>
+              <td><%=rs.getString("quantity_in_hand")%></td>
+            </tr>
+  <%}
+}
+%>
+          </tbody>
+        </table>
+      </div>
+</div>
+</div>
 <hr>
 
 <div class="table-responsive">

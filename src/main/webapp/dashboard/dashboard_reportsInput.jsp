@@ -314,8 +314,8 @@
               <td><%=rs.getString("item_name")%></td>
               <td><%=rs.getString("machine_type")%></td>
               <td><%=rs.getString("quantity")%></td>
-              <td><a id="delete-btn" href= "deleteinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button type="button" class="btn btn-secondary">Delete</button></a> 
-                <a href= "updateinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button id="edit-btn" type="button" class="btn btn-secondary">Edit</button></a></td>
+              <td><a id="delete-btn" href= "deleteinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button type="button" class="btn btn-sm btn-danger">Delete</button></a> 
+                <a href= "updateinput_process.jsp?input_id=<%=rs.getString("input_id")%>"><button id="edit-btn" type="button" class="btn btn-sm btn-warning">Edit</button></a></td>
             </tr>
   <%}
   

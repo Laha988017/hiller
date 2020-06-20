@@ -1,27 +1,3 @@
-Host
-ec2-35-174-127-63.compute-1.amazonaws.com
-
-Database
-d57parlkjsguj6
-
-User
-alpndjupeyjvrt
-
-Port
-5432
-
-Password
-98727433ed7a5ec3f40745d38eeba15e108b6377bf048d8bdac75d6236b5925a
-
-URI
-postgres://ec2-35-174-127-63.compute-1.amazonaws.com:5432/d57parlkjsguj6
-
-Heroku CLI
-heroku pg:psql postgresql-globular-47847 --app hillerinventory
-
-/* String url = "jdbc:postgresql://ec2-79-125-26-232.eu-west-1.compute.amazonaws.com:5432/ddi57bvd0bf12a?sslmode=require"; */
-
-String url = "jdbc:postgresql://ec2-35-174-127-63.compute-1.amazonaws.com:5432/d57parlkjsguj6?sslmode=require";
 
 
 CREATE TABLE admin

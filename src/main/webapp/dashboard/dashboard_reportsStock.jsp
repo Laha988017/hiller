@@ -191,7 +191,7 @@
           <div class="table-responsive text-center container">
         <table class="table table-striped table-sm">
           <thead>
-            <tr>
+            <tr class="table-info">
               <th>#</th>
               <th>Item</th>
               <th>M/C Type</th>

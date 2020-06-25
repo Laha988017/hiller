@@ -53,6 +53,19 @@
           font-size: 3.5rem;
         }
       }
+      .container {
+        height: 40px;
+        position: relative;
+        border: 3px;
+      }      
+      .center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+      }
     </style>
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
@@ -213,10 +226,12 @@
               <input type="text" class="form-control" id="challanNo" name="challanNo">
             </div>
           </div>
-          <div class="align-center">
+          <div class="container">
+          <div class="center">
             <button type="submit" class="btn btn-success">Search</button>
             <button type="clear" class="btn btn-warning">Clear</button>
           </div>
+        </div>
         </form>
     
     <hr>

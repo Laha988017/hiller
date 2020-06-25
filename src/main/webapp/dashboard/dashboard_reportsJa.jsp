@@ -28,7 +28,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.0.1">
-    <title>Input Item Report</title>
+    <title>Job Allocation Report</title>
     <!-- Bootstrap core CSS -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -48,6 +48,20 @@
         .bd-placeholder-img-lg {
           font-size: 3.5rem;
         }
+      }
+
+      .container {
+        height: 40px;
+        position: relative;
+        border: 3px;
+      }      
+      .center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
       }
     </style>
     <!-- Custom styles for this template -->
@@ -151,7 +165,7 @@
       </div>
       <h1 class="h3">Filters</h1>
 
-        <form method="get" action="dashboard_reportsInput.jsp">
+        <form method="get" action="dashboard_reportsJa.jsp">
           <div class="form-row">
             <div class="form-group col-md-3">
             Job Allocation From Date
@@ -198,10 +212,12 @@
               <input type="text" class="form-control" id="challanNo" name="challanNo">
             </div>
           </div>
-          <div class="align-center">
+          <div class="container">
+          <div class="center">
             <button type="submit" class="btn btn-success">Search</button>
             <button type="clear" class="btn btn-warning">Clear</button>
           </div>
+        </div>
         </form>
     
     <hr>

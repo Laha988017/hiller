@@ -57,6 +57,19 @@
           font-size: 3.5rem;
         }
       }
+      .container {
+        height: 30px;
+        position: relative;
+        border: 3px;
+      }      
+      .center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+      }
     </style>
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
@@ -210,8 +223,12 @@
       <input type="Number" class="form-control" id="quantity" name="quantity" value="<%=rsEdit.getString("quantity")%>">
     </div>
   </div>
+  <div class="container">
+  <div class="center">
   <button type="submit" class="btn btn-primary">Submit</button>
   <button type="clear" class="btn btn-primary">Clear</button>
+</div>
+</div>
 </form>
 <hr>
 

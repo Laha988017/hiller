@@ -259,7 +259,7 @@
   </div>
   <div class="container">
     <div class="center">
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" class="btn btn-primary">Allocate</button>
   <button type="clear" class="btn btn-primary">Clear</button>
     </div>
   </div>

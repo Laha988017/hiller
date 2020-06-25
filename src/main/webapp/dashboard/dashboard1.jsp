@@ -52,6 +52,11 @@
           font-size: 3.5rem;
         }
       }
+      .container {
+        height: 300px;
+        position: relative;
+        border: 0px;
+      }      
     </style>
     <!-- Custom styles for this template -->
     <link href="dashboard.css" rel="stylesheet">
@@ -213,7 +218,8 @@
   <button type="clear" class="btn btn-warning">Clear</button>
 </form>
 </div>
-<div class="col-md-6">
+<div class="container">
+
   <div class="table-responsive text-center container">
     <h1 class="h4">Stock</h1>
         <table class="table table-striped table-sm">
@@ -249,6 +255,7 @@
         </table>
       </div>
 </div>
+
 </div>
 <hr>
 
